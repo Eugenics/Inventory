@@ -1,0 +1,78 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1 class="title ">Офисы</h1>
+<nav class="level">
+  <div class="level-left">
+    <div class="level-item">
+      <p class="subtitle is-5">
+        <ul>
+          <li><strong>Офисы:</strong> {{ office_list.count }}</li>
+        </ul>
+      </p>
+    </div>
+    {% if perms.catalog.add_office %}
+    <p class="level-item">
+      <a class="button is-dark" href="create">Создать</a>
+    </p>
+    {% endif %}
+
+    <div class="level-item is-hidden-tablet-only">
+      <div class="field has-addons">
+        <p class="control">
+          <input class="input" type="text" placeholder="Name, email…">
+        </p>
+        <p class="control">
+          <button class="button">
+            Search
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="level-right">
+    <p class="level-item"><strong>All</strong></p>
+    <p class="level-item"><a>With orders</a></p>
+    <p class="level-item"><a>Without orders</a></p>
+  </div>
+</nav>
+{% if office_list %}
+<div id="content" class="flex">
+  <table class="table is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <th><abbr title="house_id">Код</abbr></th>
+        <th><abbr title="house_name">Наименование</abbr></th>
+        <th><abbr title="house_rem">Примечание</abbr></th>
+        <th><abbr title="house_rem">Здание</abbr></th>
+        <th><abbr title="house_region_id">Склад</abbr></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for office in office_list %}
+      <tr>
+        <th>{{ office.office_id }}</th>
+        <td><a href="{{ office.get_absolute_url }}"> {{ office.office_name }}</a></td>
+        <td>{{ office.office_notes }}</td>
+        <td>{{ office.office_houses_id }}</td>
+        <td>{{ office.get_is_store }}</td>
+        <td>
+          {% if perms.catalog.delete_office %}
+          <div class="buttons">
+            <a class="button is-small" href="{{ office.get_absolute_url }}">Редактировать</a>
+            <a class="button is-small" href="{{ office.get_delete_url }}">Удалить</a>
+          </div>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+</div>
+{% endif %}
+{% endblock %}

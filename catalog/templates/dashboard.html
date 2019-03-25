@@ -1,0 +1,75 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<div class="title has-text-primary">
+    <i class="fa fa-tachometer"></i> Dashboard
+</div>
+<div class="box nitification">
+    <div class="title is-4">Справочники</div>
+    <div class="columns is-multiline">
+        <div class="column">
+            <div class="box notification is-success has-text-centered">
+                <div class="heading ">Регионы</div>
+                <div class="title">
+                    <p>{{ num_regions }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box notification is-primary has-text-centered">
+                <div class="heading">Здания</div>
+                <div class="title">
+                    <a href="{% url 'house' %}">{{ num_houses }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box notification is-warning has-text-centered">
+                <div class="heading">Офисы</div>
+                <div class="title">
+                    <a href="{% url 'office' %}">{{ num_offices }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box notification is-info has-text-centered">
+                <div class="heading">Подразделения</div>
+                <div class="title">
+                    <a href="{% url 'department' %}">{{ num_departments }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box notification is-danger has-text-centered">
+                <div class="heading">Сотрудники</div>
+                <div class="title">
+                    <a href="{% url 'employee' %}">{{ num_employees }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box notification is-success has-text-centered">
+                <div class="heading">Должности</div>
+                <div class="title">
+                    <a href="{% url 'position' %}">{{ num_positions }}</a>
+                </div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="box notification is-primary has-text-centered">
+                <div class="heading">Типы МЦ</div>
+                <div class="title">
+                    <a href="{% url 'mctype' %}">{{ num_mctype }}</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="box nitification">
+    <div class="title is-4">Объекты учета</div>
+    <div class="columns is-multiline">
+
+    </div>
+</div>
+{% endblock %}

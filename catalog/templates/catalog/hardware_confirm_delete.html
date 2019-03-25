@@ -1,0 +1,27 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+
+<h1 class="title ">Удалить?</h1>
+
+<p>Вы действительно хотите удалить запись: {{ hardware.whard_name }}?</p>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <nav class="level">
+            <div class="level-left">
+                <div class="level-item">
+                    <button type="submit" class="button is-danger">Удалить</button>
+                </div>
+                <div class="level-item">
+                    <a class="button is-warning" href="{{ hardware.get_hardware_list }}">
+                        Отмена
+                    </a>
+                </div>
+            </div>            
+        </nav>   
+</form>
+
+{% endblock %}

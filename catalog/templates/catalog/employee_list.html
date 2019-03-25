@@ -1,0 +1,100 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1 class="title ">Сотрудники</h1>
+<nav class="level">
+    <div class="level-left">
+        <div class="level-item">
+            <p class="subtitle is-5">
+                <ul>
+                    <li><strong>Всего:</strong> {{ employee_list.count }}</li>
+                </ul>
+            </p>
+        </div>
+        {% if perms.catalog.add_employee %}
+        <p class="level-item">
+            <a class="button is-dark" href="create">Создать</a>
+        </p>
+        {% endif %}
+
+        <div class="level-item is-hidden-tablet-only">
+            <div class="field has-addons">
+                <p class="control">
+                    <input class="input" type="text" placeholder="Name, email…">
+                </p>
+                <p class="control">
+                    <button class="button">
+                        Search
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% if employee_list %}
+<div id="content" class="flex">
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th><abbr title="employee_id">Код</abbr></th>
+                <th><abbr title="employee_lastname">Фамилия</abbr></th>
+                <th><abbr title="employee_firstname">Имя</abbr></th>
+                <th><abbr title="employee_middlename">Отчество</abbr></th>
+                <th><abbr title="employee_email"></abbr>email</th>
+                <th><abbr title="employee_position_id">Должность</abbr></th>
+                <th><abbr title="employee_office_id">Офис</abbr></th>
+                <th><abbr title="employee_phone_work">Тел</abbr></th>
+                <th><abbr title="employee_is_chief">Руководитель</abbr></th>
+                <th><abbr title="employee_is_respons">МО лицо</abbr></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th><abbr title="employee_id">Код</abbr></th>
+                <th><abbr title="employee_lastname">Фамилия</abbr></th>
+                <th><abbr title="employee_firstname">Имя</abbr></th>
+                <th><abbr title="employee_middlename">Отчество</abbr></th>
+                <th><abbr title="employee_email"></abbr>email</th>
+                <th><abbr title="employee_position_id">Должность</abbr></th>
+                <th><abbr title="employee_office_id">Офис</abbr></th>
+                <th><abbr title="employee_phone_work">Тел</abbr></th>
+                <th><abbr title="employee_is_chief">Руководитель</abbr></th>
+                <th><abbr title="employee_is_respons">МО лицо</abbr></th>
+                <th></th>
+            </tr>
+        </tfoot>
+        <tbody>
+            {% for employee in employee_list %}
+            <tr>
+                <th>{{ employee.employee_id }}</th>
+                <td><a href="{{ employee.get_absolute_url }}"> {{ employee.employee_lastname }}</a></td>
+                <td>{{ employee.employee_firstname }}</td>
+                <td>{{ employee.employee_middlename }}</td>
+                <td>{{ employee.employee_email }}</td>
+                <td>{{ employee.employee_position_id }}</td>
+                <td>{{ employee.employee_office_id }}</td>
+                <td>{{ employee.employee_phone_work }}</td>
+                <td>
+                    <input type="checkbox" {{ employee.get_is_chief_to_check }}>
+                </td>
+                <td>
+                    <input type="checkbox" {{ employee.get_is_respons_to_check }}>
+                </td>
+                <td>
+                    {% if perms.catalog.delete_position %}
+                    <div class="buttons">
+                        <a class="button is-small" href="{{ employee.get_absolute_url }}">Редактировать</a>
+                        <a class="button is-small" href="{{ employee.get_delete_url }}">Удалить</a>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

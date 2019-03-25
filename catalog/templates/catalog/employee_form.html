@@ -1,0 +1,29 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1 class="title ">Редактирование</h1>
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form|bulma }}
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <button type="submit" class="button is-success">Сохранить</button>
+            </div>
+            <div class="level-item">
+                <a class="button is-warning" href="{{ employee.get_employee_list }}">
+                    Отмена
+                </a>
+            </div>
+        </div>
+        <div class="level-right">
+            <div class="level-item">
+                <a class="button is-danger" href="{{ employee.get_delete_url }}">
+                    Удалить
+                </a>
+            </div>
+        </div>
+    </nav>
+</form>
+{% endblock %}

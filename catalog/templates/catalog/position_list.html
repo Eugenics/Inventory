@@ -1,0 +1,71 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1 class="title ">Должности</h1>
+<nav class="level">
+  <div class="level-left">
+    <div class="level-item">
+      <p class="subtitle is-5">
+        <ul>
+          <li><strong>Всего:</strong> {{ position_list.count }}</li>
+        </ul>
+      </p>
+    </div>
+    {% if perms.catalog.add_position %}
+    <p class="level-item">
+      <a class="button is-dark" href="create">Создать</a>
+    </p>
+    {% endif %}
+
+    <div class="level-item is-hidden-tablet-only">
+      <div class="field has-addons">
+        <p class="control">
+          <input class="input" type="text" placeholder="Name, email…">
+        </p>
+        <p class="control">
+          <button class="button">
+            Search
+          </button>
+        </p>
+      </div>
+    </div>
+  </div>
+</nav>
+
+{% if position_list %}
+<div id="content" class="flex">
+  <table class="table is-hoverable is-fullwidth" >
+    <thead>
+      <tr>
+        <th><abbr title="department_id">Код</abbr></th>
+        <th><abbr title="department_name">Должность</abbr></th>
+        <th><abbr title="department_notes">Примечание</abbr></th>
+        <th><abbr title="department_region_id">Подразделение</abbr></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for position in position_list %}
+      <tr>
+        <th>{{ position.position_id }}</th>
+        <td><a href="{{ position.get_absolute_url }}"> {{ position.position_name }}</a></td>
+        <td>{{ position.position_notes }}</td>
+        <td>{{ position.position_department_id }}</td>
+        <td>
+          {% if perms.catalog.delete_position %}
+          <div class="buttons">
+            <a class="button is-small" href="{{ position.get_absolute_url }}">Редактировать</a>
+            <a class="button is-small" href="{{ position.get_delete_url }}">Удалить</a>
+          </div>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+</div>
+{% endif %}
+{% endblock %}

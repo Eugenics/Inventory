@@ -1,0 +1,26 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1>Inventory</h1>
+
+<p>Welcome</p>
+
+<div>
+{% load static %}
+<img src="{% static "images/the_engineer.jpg" %}" alt="My image" style="width:10%;height:10%;"/>
+</div>  
+
+
+<h2>Dynamic content</h2>
+
+<p>The Inventory has the following record counts:</p>
+<ul>
+    <li><strong>Houses:</strong> {{ num_houses }}</li>
+    <li><strong>Offices:</strong> {{ num_offices }}</li>
+</ul>
+
+
+You have visited this page {{ num_visits }} times.
+
+{% endblock %}

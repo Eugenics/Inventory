@@ -1,0 +1,208 @@
+{% load static bulma_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock title %}</title>
+  {% block css %}
+  <link rel="stylesheet" href="{% static 'bulma/css/font-awesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'bulma/css/style.min.css' %}">
+  <style type="text/css">
+    A {
+      text-decoration: none;
+      /* Убирает подчеркивание для ссылок */
+    }
+  </style>
+  {% block extra_css %}{% endblock extra_css %}
+  {% endblock css %}
+</head>
+
+<body>
+  {% block header %}
+  <nav class="navbar has-shadow is-dark">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="/">
+          ТМЦ
+        </a>
+        <div id="navbarBurger" class="navbar-burger burger" data-target="navMenu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div id="navMenu" class="navbar-menu">
+        <div class="navbar-start">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link" href="">
+              Объекты учета
+            </a>
+            <div class="navbar-dropdown ">
+              <a class="navbar-item " href="{% url 'hardware' %}">
+                Оборудование
+              </a>
+              <a class="navbar-item " href="{% url 'house' %}">
+                Программное обеспечение
+              </a>
+              <a class="navbar-item" href="{% url 'relofficeresp' %}">
+                Ответственные
+              </a>
+            </div>
+          </div>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link" href="">
+              Справочники
+            </a>
+            <div class="navbar-dropdown ">
+              <a class="navbar-item " href="{% url 'house' %}">
+                Здания
+              </a>
+              <a class="navbar-item " href="{% url 'office' %}">
+                Офисы
+              </a>
+              <a class="navbar-item " href="{% url 'department' %}">
+                Подразделения
+              </a>
+              <a class="navbar-item " href="{% url 'position' %}">
+                Должности
+              </a>
+              <a class="navbar-item " href="{% url 'employee' %}">
+                Сотрудники
+              </a>
+              <a class="navbar-item " href="">
+                Категории МЦ
+              </a>
+              <a class="navbar-item " href="{% url 'mctype' %}">
+                Типы МЦ
+              </a>
+            </div>
+          </div>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <div class="navbar-link">
+              Дополнительно
+            </div>
+            <div id="moreDropdown" class="navbar-dropdown ">
+              <a class="navbar-item " href="">
+                <div class="level is-mobile">
+                  <div class="level-left">
+                    <div class="level-item">
+                      <p>
+                        <strong>Extensions</strong>
+                        <br>
+                        <small>Side projects to enhance Bulma</small>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="level-right">
+                    <div class="level-item">
+                      <span class="icon has-text-info">
+                        <i class="fa fa-plug"></i>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="navbar-end">
+          {% if user.is_authenticated %}
+          <a class="navbar-item is-hidden-desktop-only">Пользователь: {{ user.get_username }}</a>
+          {% endif %}
+          <div class="buttons">
+            {% if user.is_authenticated %}
+            <a class="button is-dark" href="{% url 'logout'%}?next={{request.path}}">Выход</a>
+            {% else %}
+            <a class="button is-dark" href="{% url 'login'%}?next={{request.path}}">Вход</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+  {% endblock header %}
+
+  {% block hero %}
+  <section class="section">
+    <div class="columns">
+      <aside class="column is-4-tablet is-3-desktop is-2-widescreen is-mobile">
+        <nav class="menu">
+          <p class="menu-label">
+            General
+          </p>
+          <ul class="menu-list">
+            <li><a href="/dashboard">Dashboard</a></li>
+          </ul>
+          <p class="menu-label">
+            Объекты учета
+          </p>
+          <ul class="menu-list">
+            <li><a href="{% url 'hardware' %}">Оборудование</a></li>
+            <li><a href="">Программное обеспечение</a></li>
+            <li><a href="{% url 'relofficeresp' %}">Ответственные</a></li>
+          </ul>
+          <p class="menu-label">
+            Справочники
+          </p>
+          <ul class="menu-list">
+            <li><a href="{% url 'house' %}">Здания</a></li>
+            <li><a href="{% url 'office' %}">Офисы</a></li>
+            <li><a href="{% url 'department' %}">Подразделения</a></li>
+            <li><a href="{% url 'position' %}">Должности</a></li>
+            <li><a href="{% url 'employee' %}">Сотрудники</a></li>
+            <li><a href="">Категории МЦ</a></li>
+            <li><a href="{% url 'mctype' %}">Типы МЦ</a></li>
+          </ul>
+        </nav>
+      </aside>
+      <div class="column is-mobile">
+        {% block content %}{% endblock %}
+
+        {% block pagination %}
+        {% if is_paginated %}
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+          {% if page_obj.has_previous %}
+          <a class="pagination-previous" href="{{ request.path }}?page={{ page_obj.previous_page_number }}">Previous</a>
+          {% endif %}
+          {% if page_obj.has_next %}
+          <a class="pagination-next" href="{{ request.path }}?page={{ page_obj.next_page_number }}">Next page</a>
+          {% endif %}
+          <ul class="pagination-list">
+            <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+            <p>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</p>
+          </ul>
+        </nav>
+        {% endif %}
+        {% endblock %}
+      </div>
+    </div>
+  </section>
+  {% endblock hero %}
+
+  {% block footer %}
+  <footer class="footer">
+    <div class="container">
+      <div class="content has-text-centered">
+        <p>
+          <a href="http://site2">филиал ФГУП "ГРЧЦ" в СФО</a>
+        </p>
+        <p>
+          <a class="icon" href="">
+            <i class="fa fa-github"></i>
+          </a>
+        </p>
+      </div>
+    </div>
+  </footer>
+  {% endblock footer %}
+
+  {% block javascript %}
+  {% block extra_javascript %}{% endblock extra_javascript %}
+  {% endblock javascript %}
+
+</body>
+
+</html>

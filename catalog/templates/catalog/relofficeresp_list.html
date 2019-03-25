@@ -1,0 +1,60 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1 class="title ">Ответственные</h1>
+<nav class="level">
+    <div class="level-left">  
+        {% if perms.catalog.add_relofficeresp %}
+        <p class="level-item">
+            <a class="button is-dark" href="create">Создать</a>
+        </p>
+        {% endif %}
+
+        <div class="level-item is-hidden-tablet-only">
+            <div class="field has-addons">
+                <p class="control">
+                    <input class="input" type="text" placeholder="Name, email…">
+                </p>
+                <p class="control">
+                    <button class="button">
+                        Search
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+</nav>
+
+{% if relofficeresp_list %}
+<div id="content" class="flex">
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th><abbr title="roe_id">Код</abbr></th>
+                <th><abbr title="roe_office_id">Офис</abbr></th>
+                <th><abbr title="roe_employee_id">Сотрудник</abbr></th>                
+                <th></th>
+            </tr>
+        </thead>        
+        <tbody>
+            {% for relofficeresp in relofficeresp_list %}
+            <tr>
+                <th>{{ relofficeresp.roe_id }}</th>
+                <td>{{ relofficeresp.roe_office_id }}</td>
+                <td>{{ relofficeresp.roe_employee_id }}</td>
+                <td>
+                    {% if perms.catalog.delete_relofficeresp %}
+                    <div class="buttons">
+                        <a class="button is-small" href="{{ relofficeresp.get_absolute_url }}">Редактировать</a>
+                        <a class="button is-small" href="{{ relofficeresp.get_delete_url }}">Удалить</a>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}
