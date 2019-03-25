@@ -1,0 +1,79 @@
+{% load static bulma_tags %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}{% endblock title %}</title>
+  {% block css %}
+  <link rel="stylesheet" href="{% static 'bulma/css/fontawesome.min.css' %}">
+  <link rel="stylesheet" href="{% static 'bulma/css/style.min.css' %}">
+  <link rel="stylesheet" href="{% static 'bulma/css/login.css' %}">
+  <script defer src="{% static 'js/all.js' %}"></script>
+  {% block extra_css %}{% endblock extra_css %}
+  {% endblock css %}
+</head>
+
+<body>
+
+  {% block header %}
+
+  <nav class="navbar is-dark">
+    <div id="navMenuExample" class="navbar-menu">
+      <div class="navbar-end">
+        {% url 'login' as login_url %}
+        {% if login_url %}
+        <a class="navbar-item is-hidden-desktop-only" href="{{ login_url }}">
+          Login
+        </a>
+        {% endif %}
+        {% url 'account_login' as login_url %}
+        {% if login_url %}
+        <a class="navbar-item is-hidden-desktop-only" href="{{ login_url }}">
+          Login (allauth)
+        </a>
+        {% endif %}
+        {% url 'account_signup' as signup_url %}
+        {% if signup_url %}
+        <a class="navbar-item is-hidden-desktop-only" href="{{ signup_url }}">
+          Signup (allauth)
+        </a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  {% endblock header %}
+
+  {% block hero %}
+  <section class="hero is-dark is-fullheight">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column is-4-tablet is-5-desktop is-5-widescreen is-centered">
+            <div class="box has-text-centered">
+              <figure class="avatar">
+                <img src="{% static 'images/grchc.jfif' %}" alt="My image" style="width:30%;height:30%;" />
+              </figure>
+                {% block messages %}{% endblock messages %}
+                {% block content_area %}
+                {% block content_title %}{% endblock content_title %}
+                {% block content %}{% endblock content %}
+                {% endblock content_area %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  {% endblock hero %}
+
+  {% block modal %}{% endblock modal %}
+  {% block footer %}{% endblock footer %}
+  {% block javascript %}
+  {% block extra_javascript %}{% endblock extra_javascript %}
+  {% endblock javascript %}
+</body>
+
+</html>
