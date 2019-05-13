@@ -1,0 +1,50 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1 class="title ">Категории материальных ценностей</h1>
+
+{% if mccat_list %}
+<div id="content" class="flex">
+    {% if perms.catalog.add_mccat %}
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <p class="level-item">
+                    <a class="button is-dark" href="create">Создать</a>
+                </p>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th><abbr title="wcat_id">Код</abbr></th>
+                <th><abbr title="wcatname">Наименование</abbr></th>
+                <th><abbr title="wcatnotes">Примечание</abbr></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mccat in mccat_list %}
+            <tr>
+                <th>{{ mccat.wcat_id }}</th>
+                <td><a href="{{ mccat.get_absolute_url }}"> {{ mccat.wcatname }}</a></td>
+                <td>{{ mccat.wcatnotes }}</td>
+                <td>
+                    {% if perms.catalog.delete_mccat %}
+                    <div class="buttons">
+                        <a class="button is-small" href="{{ mccat.get_absolute_url }}">Редактировать</a>
+                        <a class="button is-small" href="{{ mccat.get_delete_url }}">Удалить</a>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}
