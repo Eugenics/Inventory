@@ -10,7 +10,7 @@
 <form method="post" action="{% url 'login' %}">
   {% csrf_token %}
   {{ form|bulma }}
-  <div class="field">
+  <div class="control">
     <button type="submit" class="button is-block is-info is-large is-fullwidth">{% trans 'Вход' %}</button>
   </div>
   <input type="hidden" name="next" value="{{ next }}" />
