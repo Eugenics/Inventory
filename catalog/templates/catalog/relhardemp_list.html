@@ -1,0 +1,44 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1 class="title ">Рабочее место сотрудника: {{ relhe_employee_id }}</h1>
+<nav class="level">
+    <div class="level-left">  
+        {% if perms.catalog.add_relhardemp %}
+        <p class="level-item">
+            <a class="button is-dark" href="{% url 'relhardemp_create' employee_pk %}">Создать</a>
+        </p>
+        {% endif %}        
+    </div>
+</nav>
+
+{% if relhardemp_list %}   
+<div id="content" class="flex">
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th><abbr>Код</abbr></th>
+                <th><abbr>Железо</abbr></th>                                              
+                <th></th>
+            </tr>
+        </thead>        
+        <tbody>
+            {% for relhardemp in relhardemp_list %}
+            <tr>                
+                <td>{{ relhardemp.relhe_id }}</td>
+                <td>{{ relhardemp.relhe_whard_id }}</td>
+                <td>
+                    {% if perms.catalog.delete_relhardemp %}
+                    <div class="buttons">
+                        <a class="button is-small" href="">Редактировать</a>                        
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

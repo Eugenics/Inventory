@@ -1,0 +1,53 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n static %}
+
+{% block content %}
+<h1 class="title ">Подразделения</h1>
+
+{% if department_list %}
+<div id="content" class="flex">
+  {% if perms.catalog.add_department %}
+  <nav class="level">
+    <div class="level-left">
+      <div class="level-item">
+        <p class="level-item">
+          <a class="button is-dark" href="create">Создать</a>
+        </p>
+      </div>
+    </div>
+  </nav>
+  {% endif %}
+  <table class="table is-hoverable is-fullwidth">
+    <thead>
+      <tr>
+        <th><abbr title="department_id">Код</abbr></th>
+        <th><abbr title="department_name">Наименование</abbr></th>
+        <th><abbr title="department_notes">Примечание</abbr></th>
+        <th><abbr title="department_region_id">Регион</abbr></th>
+        <th><abbr title="department_parent_id">Головное подразделение</abbr></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for department in department_list %}
+      <tr>
+        <th>{{ department.department_id }}</th>
+        <td><a href="{{ department.get_absolute_url }}"> {{ department.department_name }}</a></td>
+        <td>{{ department.department_notes }}</td>
+        <td>{{ department.department_region_id }}</td>
+        <td>{{ department.department_parent_id }}</td>
+        <td>
+          {% if perms.catalog.delete_department %}
+          <div class="buttons">
+            <a class="button is-small" href="{{ department.get_absolute_url }}">Редактировать</a>
+            <a class="button is-small" href="{{ department.get_delete_url }}">Удалить</a>
+          </div>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n static %}
+
+{% block content %}
+<h1 class="title ">Оборудование</h1>
+
+{% if hardware_list %}
+<div id="content" class="flex">
+    {% if perms.catalog.add_hardware %}
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <p class="level-item">
+                    <a class="button is-dark" href="create">Создать</a>
+                </p>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th><abbr title="whard_id">Код</abbr></th>
+                <th><abbr title="whard_inumber">Инв номер</abbr></th>
+                <th><abbr title="whard_wcat_id">Категория</abbr></th>
+                <th><abbr title="whard_wtype_id"></abbr>Тип</th>
+                <th><abbr title="whard_name">Наименование</abbr></th>
+                <th><abbr title="whard_office_id">Офис</abbr></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for hardware in hardware_list %}
+            <tr>
+                <th>{{ hardware.whard_id }}</th>
+                <td><a href="{{ hardware.get_absolute_url }}"> {{ hardware.whard_inumber }}</a></td>
+                <td>{{ hardware.whard_wcat_id }}</td>
+                <td>{{ hardware.whard_wtype_id }}</td>
+                <td>{{ hardware.whard_name }}</td>
+                <td>{{ hardware.whard_office_id }}</td>
+                <td>
+                    {% if perms.catalog.delete_hardware %}
+                    <div class="buttons">
+                        <a class="button is-small" href="{{ hardware.get_absolute_url }}">Редактировать</a>
+                        <a class="button is-small" href="{{ hardware.get_delete_url }}">Удалить</a>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

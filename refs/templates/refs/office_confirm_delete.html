@@ -1,0 +1,15 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+
+<h1>Delete Office</h1>
+
+<p>Are you sure you want to delete the office: {{ office_name }}?</p>
+
+<form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Yes, delete.">
+</form>
+
+{% endblock %}

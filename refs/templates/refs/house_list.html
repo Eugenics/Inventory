@@ -1,0 +1,58 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+{% load static %}
+
+{% block content %}
+<h1 class="title ">Здания</h1>
+
+{% if house_list %}
+<div id="content" class="flex">
+  <div id="content_main">
+    <form id="change-list">
+      {% if perms.catalog.add_house %}
+      <nav class="level">
+        <div class="level-left">
+          <div class="level-item">
+            <p class="level-item">
+              <a class="button is-dark" href="create">Создать</a>
+            </p>
+          </div>
+        </div>
+      </nav>
+      {% endif %}
+      <table class="table is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th><abbr title="house_id">Код</abbr></th>
+            <th><abbr title="house_name">Наимменование</abbr></th>
+            <th><abbr title="house_rem">Примечание</abbr></th>
+            <th><abbr title="house_region_id">Регион</abbr></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for house in house_list %}
+          <tr>
+            <th>{{ house.houses_id }}</th>
+            <td><a href="{{ house.get_absolute_url }}"> {{ house.houses_name }}</a></td>
+            <td>{{ house.houses_rem }}</td>
+            <td>{{ house.houses_region_id }}</td>
+            <td>
+              {% if perms.catalog.delete_house %}
+              <div class="buttons">
+                <a class="button is-small" href="{{ house.get_absolute_url }}">Редактировать</a>
+                <a class="button is-small" href="{{ house.get_delete_url }}">Удалить</a>
+              </div>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </form>
+  </div>
+</div>
+{% endif %}
+
+
+{% endblock %}

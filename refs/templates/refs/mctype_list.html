@@ -1,0 +1,50 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1 class="title ">Типы материальных ценностей</h1>
+
+{% if mctype_list %}
+<div id="content" class="flex">
+    {% if perms.catalog.add_mctype %}
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <p class="level-item">
+                    <a class="button is-dark" href="create">Создать</a>
+                </p>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th><abbr title="wtype_id">Код</abbr></th>
+                <th><abbr title="wtype_name">Наименование</abbr></th>
+                <th><abbr title="wtype_notes">Примечание</abbr></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mctype in mctype_list %}
+            <tr>
+                <th>{{ mctype.wtype_id }}</th>
+                <td><a href="{{ mctype.get_absolute_url }}"> {{ mctype.wtype_name }}</a></td>
+                <td>{{ mctype.wtype_notes }}</td>
+                <td>
+                    {% if perms.catalog.delete_mctype %}
+                    <div class="buttons">
+                        <a class="button is-small" href="{{ mctype.get_absolute_url }}">Редактировать</a>
+                        <a class="button is-small" href="{{ mctype.get_delete_url }}">Удалить</a>
+                    </div>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}

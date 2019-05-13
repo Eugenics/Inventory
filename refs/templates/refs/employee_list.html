@@ -1,0 +1,64 @@
+{% extends "base_generic.html" %}
+{% load bulma_tags i18n %}
+
+{% block content %}
+<h1 class="title ">Сотрудники</h1>
+
+{% if employee_list %}
+<div id="content" class="flex">
+    {% if perms.catalog.add_employee %}
+    <nav class="level">
+        <div class="level-left">
+            <div class="level-item">
+                <p class="level-item">
+                    <a class="button is-dark" href="create">Создать</a>
+                </p>
+            </div>
+        </div>
+    </nav>
+    {% endif %}
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th><abbr title="employee_id">Код</abbr></th>
+                <th><abbr title="employee_lastname">ФИО</abbr></th>
+                <th><abbr title="employee_email"></abbr>email</th>
+                <th><abbr title="employee_position_id">Должность</abbr></th>
+                <th><abbr title="employee_phone_work">Тел</abbr></th>
+                <th><abbr title="employee_is_respons">МО лицо</abbr></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tfoot>
+        </tfoot>
+        <tbody>
+            {% for employee in employee_list %}
+            <tr>
+                <th>{{ employee.employee_id }}</th>
+                <td><a href="{{ employee.get_absolute_url }}"> {{ employee.employee_full_fio }}</a></td>
+                <td>{{ employee.employee_email }}</td>
+                <td>{{ employee.employee_position_id }}</td>
+                <td>{{ employee.employee_phone_work }}</td>
+                <td>
+                    <input type="checkbox" {{ employee.get_is_respons_to_check }}>
+                </td>
+                <td>
+
+                    <div class="buttons">
+                        {% if perms.catalog.view_relhardemp %}
+                        <a class="button is-small" href="{% url 'relhardemp' employee.employee_id %}">РМ</a>
+                        {% endif %}
+                        {% if perms.catalog.add_employee %}
+                        <a class="button is-small" href="{{ employee.get_absolute_url }}">Редактировать</a>
+                        <a class="button is-small" href="{{ employee.get_delete_url }}">Удалить</a>
+                        {% endif %}
+                    </div>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+{% endblock %}
