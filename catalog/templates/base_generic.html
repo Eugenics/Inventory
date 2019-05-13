@@ -1,4 +1,5 @@
-{% load static bulma_tags %}
+{% load static bulma_tags i18n %}
+{% load ref_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,13 +7,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}{% endblock title %}</title>
+  <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+
   {% block css %}
   <link rel="stylesheet" href="{% static 'bulma/css/font-awesome.min.css' %}">
   <link rel="stylesheet" href="{% static 'bulma/css/style.min.css' %}">
   <style type="text/css">
     A {
       text-decoration: none;
-      /* Убирает подчеркивание для ссылок */
     }
   </style>
   {% block extra_css %}{% endblock extra_css %}
@@ -40,15 +42,21 @@
               Объекты учета
             </a>
             <div class="navbar-dropdown ">
+              {% if perms.catalog.view_hardware %}
               <a class="navbar-item " href="{% url 'hardware' %}">
                 Оборудование
               </a>
-              <a class="navbar-item " href="{% url 'house' %}">
+              {% endif %}
+              {% if perms.catalog.view_software %}
+              <a class="navbar-item " href="">
                 Программное обеспечение
               </a>
+              {% endif %}
+              {% if perms.catalog.view_relofficeresp %}
               <a class="navbar-item" href="{% url 'relofficeresp' %}">
                 Ответственные
               </a>
+              {% endif %}
             </div>
           </div>
           <div class="navbar-item has-dropdown is-hoverable">
@@ -56,27 +64,41 @@
               Справочники
             </a>
             <div class="navbar-dropdown ">
+              {% if perms.catalog.view_house %}
               <a class="navbar-item " href="{% url 'house' %}">
                 Здания
               </a>
+              {% endif %}
+              {% if perms.catalog.view_office %}
               <a class="navbar-item " href="{% url 'office' %}">
                 Офисы
               </a>
+              {% endif %}
+              {% if perms.catalog.view_department %}
               <a class="navbar-item " href="{% url 'department' %}">
                 Подразделения
               </a>
+              {% endif %}
+              {% if perms.catalog.view_position %}
               <a class="navbar-item " href="{% url 'position' %}">
                 Должности
               </a>
+              {% endif %}
+              {% if perms.catalog.view_employee %}
               <a class="navbar-item " href="{% url 'employee' %}">
                 Сотрудники
               </a>
-              <a class="navbar-item " href="">
+              {% endif %}
+              {% if perms.catalog.view_catmc %}
+              <a class="navbar-item " href="{% url 'mccat' %}">
                 Категории МЦ
               </a>
+              {% endif %}
+              {% if perms.catalog.view_mctype %}
               <a class="navbar-item " href="{% url 'mctype' %}">
                 Типы МЦ
               </a>
+              {% endif %}
             </div>
           </div>
 
@@ -110,7 +132,7 @@
         </div>
         <div class="navbar-end">
           {% if user.is_authenticated %}
-          <a class="navbar-item is-hidden-desktop-only">Пользователь: {{ user.get_username }}</a>
+          <a class="navbar-item is-hidden-desktop-only">Пользователь: {{ user.get_full_name }}</a>
           {% endif %}
           <div class="buttons">
             {% if user.is_authenticated %}
@@ -126,7 +148,7 @@
   {% endblock header %}
 
   {% block hero %}
-  <section class="section">
+  <section class="section" id="main_form">
     <div class="columns">
       <aside class="column is-4-tablet is-3-desktop is-2-widescreen is-mobile">
         <nav class="menu">
@@ -140,25 +162,84 @@
             Объекты учета
           </p>
           <ul class="menu-list">
+            {% if perms.catalog.view_hardware %}
             <li><a href="{% url 'hardware' %}">Оборудование</a></li>
+            {% endif %}
+            {% if perms.catalog.view_software %}
             <li><a href="">Программное обеспечение</a></li>
+            {% endif %}
+            {% if perms.catalog.view_relofficeresp %}
             <li><a href="{% url 'relofficeresp' %}">Ответственные</a></li>
+            {% endif %}
           </ul>
           <p class="menu-label">
             Справочники
           </p>
           <ul class="menu-list">
+            {% if perms.catalog.view_house %}
             <li><a href="{% url 'house' %}">Здания</a></li>
+            {% endif %}
+            {% if perms.catalog.view_office %}
             <li><a href="{% url 'office' %}">Офисы</a></li>
+            {% endif %}
+            {% if perms.catalog.view_department %}
             <li><a href="{% url 'department' %}">Подразделения</a></li>
+            {% endif %}
+            {% if perms.catalog.view_position %}
             <li><a href="{% url 'position' %}">Должности</a></li>
+            {% endif %}
+            {% if perms.catalog.view_employee %}
             <li><a href="{% url 'employee' %}">Сотрудники</a></li>
-            <li><a href="">Категории МЦ</a></li>
+            {% endif %}
+            {% if perms.catalog.view_catmc %}
+            <li><a href="{% url 'mccat' %}">Категории МЦ</a></li>
+            {% endif %}
+            {% if perms.catalog.view_mctype %}
             <li><a href="{% url 'mctype' %}">Типы МЦ</a></li>
+            {% endif %}
           </ul>
         </nav>
       </aside>
-      <div class="column is-mobile">
+      <div class="column is-mobile is-4-tablet is-7-desktop is-10-widescreen">
+        <nav class="level">
+          {% if request.resolver_match.url_name|in_list:'house,office,department,position,employee,mctype,hardware' %}
+          <div class="level-left">
+            <div class="level-item">
+              <form class="form" id="filter_form">
+                <div class="field is-grouped">
+                  <p class="control"> <input class="input" type="search" placeholder="" name="search"
+                      value="{{search_text}}">
+                  </p>
+                  <p class="control"><button class="button is-dark" type="submit">{% trans 'Search' %}</button></p>
+                </div>
+              </form>
+            </div>
+          </div>
+          {% endif %}
+          {% if request.resolver_match.url_name|in_list:'house,office,department,position,employee,hardware' %}
+          <div class="level-right">
+            <div class="tabs is-toggle is-right">
+              <ul>
+                <li class="tab" id="All">
+                  <p class="level-item">
+                    <a href="?">
+                      <strong>{% trans 'All' %}</strong>
+                    </a>
+                  </p>
+                </li>
+                <li class="tab" id="54"><a href="?region=54">НОВ</a></li>
+                <li class="tab" id="22"><a href="?region=22">АЛТ</a></li>
+                <li class="tab" id="24"><a href="?region=24">КРС</a></li>
+                <li class="tab" id="38"><a href="?region=38">ИРК</a></li>
+                <li class="tab" id="42"><a href="?region=42">КЕМ</a></li>
+                <li class="tab" id="55"><a href="?region=55">ОМС</a></li>
+                <li class="tab" id="70"><a href="?region=70">ТОМ</a></li>
+              </ul>
+            </div>
+          </div>
+          {% endif %}
+        </nav>
+
         {% block content %}{% endblock %}
 
         {% block pagination %}
@@ -200,7 +281,14 @@
   {% endblock footer %}
 
   {% block javascript %}
-  {% block extra_javascript %}{% endblock extra_javascript %}
+  <script>
+    var region_code = '{{ search_region|default:"" }}';
+  </script>
+  <script src="{% static 'scripts/bulma.js' %}">
+  </script>  
+  
+  {% block extra_javascript %}
+  {% endblock extra_javascript %}
   {% endblock javascript %}
 
 </body>
