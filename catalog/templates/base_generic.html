@@ -21,9 +21,9 @@
   {% endblock css %}
 </head>
 
-<body>
+<body class="has-navbar-fixed-top">
   {% block header %}
-  <nav class="navbar has-shadow is-dark">
+  <nav class="navbar has-shadow is-dark is-fixed-top">
     <div class="container">
       <div class="navbar-brand">
         <a class="navbar-item" href="/">
@@ -258,6 +258,7 @@
         </nav>
         {% endif %}
         {% endblock %}
+
       </div>
     </div>
   </section>
@@ -285,8 +286,8 @@
     var region_code = '{{ search_region|default:"" }}';
   </script>
   <script src="{% static 'scripts/bulma.js' %}">
-  </script>  
-  
+  </script>
+
   {% block extra_javascript %}
   {% endblock extra_javascript %}
   {% endblock javascript %}
