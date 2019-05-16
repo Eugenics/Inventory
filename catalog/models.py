@@ -148,7 +148,4 @@ class RelHardEmp(models.Model):
         return f'{self.relhe_employee_id}'
 
     #def get_delete_url(self):
-    #    return reverse('relhardemp_delete',args=[str(self.relhe_id)])
-
-    #def get_relofficeresp_list(self):
-    #    return reverse_lazy('relhardemp')
+    #    return reverse('relhardemp_delete', args=[str(self.relhe_id),f'{self.relhe_employee_id}'])

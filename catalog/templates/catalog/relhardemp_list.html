@@ -7,7 +7,7 @@
     <div class="level-left">  
         {% if perms.catalog.add_relhardemp %}
         <p class="level-item">
-            <a class="button is-dark" href="{% url 'relhardemp_create' employee_pk %}">Создать</a>
+            <a class="button is-dark" href="{% url 'relhardemp_create' employee_pk %}">{% trans 'Add' %}</a>
         </p>
         {% endif %}        
     </div>
@@ -31,7 +31,7 @@
                 <td>
                     {% if perms.catalog.delete_relhardemp %}
                     <div class="buttons">
-                        <a class="button is-small" href="">Редактировать</a>                        
+                        <a class="button is-small" href="{% url 'relhardemp_delete' employee_pk relhardemp.relhe_id %}">{% trans 'Delete' %}</a>                        
                     </div>
                     {% endif %}
                 </td>

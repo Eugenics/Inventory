@@ -2,7 +2,7 @@
 {% load bulma_tags i18n static %}
 
 {% block content %}
-<h1 class="title ">Редактирование {{ employee_pk }}</h1>
+<h1 class="title ">Добавление ТМЦ к рабочему мусту сотрудника</h1>
 <form action="" method="post" id="rel_hard_emp_form">
     {% csrf_token %}
     {{ form|bulma }}
@@ -12,18 +12,11 @@
                 <button type="submit" class="button is-success">{% trans 'Save' %}</button>
             </div>
             <div class="level-item">
-                <a class="button is-warning" href="">
-                    {% trans 'Reset' %}
+                <a class="button is-warning" href="{% url 'relhardemp' employee_pk %}">
+                    Отмена
                 </a>
             </div>
-        </div>
-        <div class="level-right">
-            <div class="level-item">
-                <a class="button is-danger" href="">
-                    {% trans 'Delete' %}
-                </a>
-            </div>
-        </div>
+        </div>        
     </nav>
 </form>
 

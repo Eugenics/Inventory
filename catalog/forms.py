@@ -15,6 +15,11 @@ class RelOfficeRespForm(ModelForm):
 
 
 class RelHardEmpForm(ModelForm):
+    #relhe_employee_id = forms.CharField(max_length=255,
+    #                                    strip=True,
+    #                                    label='Сотрудник',
+    #                                    disabled=True)
+
     class Meta:
         model = RelHardEmp
         fields = [
@@ -23,11 +28,19 @@ class RelHardEmpForm(ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
-        kw = args
+        employee_id_var = kwargs.pop('employee_id_var')
         super(RelHardEmpForm, self).__init__(*args, **kwargs)
         self.fields['relhe_employee_id'].queryset = Employee.objects.filter(
-            pk=14)
-            
+            pk=employee_id_var)
+        self.initial['relhe_employee_id'] = employee_id_var
+        self.fields['relhe_employee_id'].disabled = True
+
+        emp_office_val = Employee.objects.filter(pk=employee_id_var)
+        relHardDataSet = RelHardEmp.objects.all().values('relhe_whard_id')
+
+        # Фильтр доступного hard по кабинету и был ли он установлен ранее на др. РМ
+        self.fields['relhe_whard_id'].queryset = Hardware.objects.filter(
+            whard_office_id__exact=emp_office_val[0].employee_office_id) & Hardware.objects.exclude(pk__in=relHardDataSet)
 
 
 class HardwareForm(ModelForm):

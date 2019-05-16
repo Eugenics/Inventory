@@ -34,7 +34,7 @@ urlpatterns += [
     path('relhardemp/<int:pk>/update/',
          RelHardEmpUpdate.as_view(),
          name='relhardemp_update'),
-    path('relhardemp/<int:pk>/delete/',
+    path('relhardemp/<employee_id>/delete/<int:pk>/',
          RelHardEmpDelete.as_view(),
          name='relhardemp_delete'),
 ]

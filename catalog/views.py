@@ -70,7 +70,8 @@ def update_position_by_region(request):
     position_list = list(
         Position.objects.filter(
             position_department_id__department_region_id__pk__exact=region_id).
-        values('position_id', 'position_name', 'position_department_id__department_name'))
+        values('position_id', 'position_name',
+               'position_department_id__department_name'))
     return JsonResponse(position_list, safe=False)
 
 
@@ -261,11 +262,18 @@ class RelHardEmpCreate(PermissionRequiredMixin, CreateView):
     model = RelHardEmp
     permission_required = 'catalog.add_relhardemp'
     form_class = RelHardEmpForm
+    employee_id_var = None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['employee_pk'] = self.kwargs['employee_id']
         return context
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        #kwargs.update({'employee_id_var': self.kwargs['employee_id']})
+        kwargs['employee_id_var'] = self.kwargs['employee_id']
+        return kwargs
 
     def get_success_url(self):
         return reverse_lazy('relhardemp',
@@ -277,7 +285,7 @@ class RelHardEmpCreate(PermissionRequiredMixin, CreateView):
 class RelHardEmpUpdate(PermissionRequiredMixin, UpdateView):
     model = RelHardEmp
     permission_required = 'catalog.change_relhardemp'
-    success_url = reverse_lazy('relhardemp')
+    #success_url = reverse_lazy('relhardemp')
     form_class = RelHardEmpForm
 
     def get_success_url(self):
@@ -291,6 +299,11 @@ class RelHardEmpDelete(PermissionRequiredMixin, DeleteView):
     model = RelHardEmp
     success_url = reverse_lazy('relhardemp')
     permission_required = 'catalog.delete_relhardemp'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['employee_pk'] = self.kwargs['employee_id']
+        return context
 
     def get_success_url(self):
         return reverse_lazy('relhardemp',

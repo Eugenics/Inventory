@@ -11,7 +11,7 @@
     <nav class="level">
         <div class="level-left">
             <div class="level-item">
-                <button type="submit" class="button is-success">Сохранить</button>
+                <button type="submit" class="button is-success">{% trans 'Save' %}</button>
             </div>
             <div class="level-item">
                 <a class="button is-warning" href="{{ hardware.get_hardware_list }}">
@@ -22,7 +22,7 @@
         <div class="level-right">
             <div class="level-item">
                 <a class="button is-danger" href="{{ hardware.get_delete_url }}">
-                    Удалить
+                    {% trans 'Delete' %}
                 </a>
             </div>
         </div>
