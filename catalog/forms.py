@@ -27,6 +27,7 @@ class RelHardEmpForm(ModelForm):
         super(RelHardEmpForm, self).__init__(*args, **kwargs)
         self.fields['relhe_employee_id'].queryset = Employee.objects.filter(
             pk=14)
+            
 
 
 class HardwareForm(ModelForm):
